@@ -15,18 +15,61 @@ export class ApplicationRepository {
   }
 
   async findAll() {
-    return this.prisma.application.findMany();
+    return this.prisma.application.findMany({
+      include: {
+        createdBy: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+        updatedBy: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
   }
 
   async findOne(id: string) {
     return this.prisma.application.findUnique({
       where: { id },
+      include: {
+        createdBy: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+        updatedBy: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+      },
     });
   }
 
   async findByName(name: string) {
     return this.prisma.application.findFirst({
       where: { name },
+      include: {
+        createdBy: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+        updatedBy: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+      },
     });
   }
 
@@ -34,6 +77,20 @@ export class ApplicationRepository {
     return this.prisma.application.update({
       where: { id },
       data: updateApplicationDto,
+      include: {
+        createdBy: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+        updatedBy: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+      },
     });
   }
 

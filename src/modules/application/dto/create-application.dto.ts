@@ -21,4 +21,20 @@ export class CreateApplicationDto {
   @IsNotEmpty()
   @MaxLength(255)
   description: string;
+
+  @ApiProperty({
+    example: 'user-1234',
+    description: 'ID of the user who created the application',
+  })
+  @IsString()
+  @IsNotEmpty()
+  createdById: string;
+
+  @ApiProperty({
+    example: 'user-1234',
+    description: 'ID of the user who last updated the application',
+  })
+  @IsString()
+  @IsNotEmpty()
+  updatedById: string;
 }

@@ -8,15 +8,19 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { ApplicationService } from './application.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { UpdateApplicationDto } from './dto/update-application.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ApplicationEntity } from './entities/application.entity';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 @ApiTags('applications')
 @Controller('applications')
+@UseGuards(JwtAuthGuard)
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}
 
@@ -28,7 +32,12 @@ export class ApplicationController {
     type: ApplicationEntity,
   })
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createApplicationDto: CreateApplicationDto) {
+  create(
+    @Body() createApplicationDto: CreateApplicationDto,
+    @CurrentUser() currentUser: any,
+  ) {
+    createApplicationDto.createdById = currentUser.id;
+    createApplicationDto.updatedById = currentUser.id;
     return this.applicationService.create(createApplicationDto);
   }
 
@@ -64,7 +73,9 @@ export class ApplicationController {
   update(
     @Param('id') id: string,
     @Body() updateApplicationDto: UpdateApplicationDto,
+    @CurrentUser() currentUser: any,
   ) {
+    updateApplicationDto.updatedById = currentUser.id;
     return this.applicationService.update(id, updateApplicationDto);
   }
 

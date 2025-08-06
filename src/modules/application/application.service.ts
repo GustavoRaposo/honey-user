@@ -24,7 +24,8 @@ export class ApplicationService {
   }
 
   async findAll() {
-    return this.applicationRepository.findAll();
+    const applications = await this.applicationRepository.findAll();
+    return applications.map(({ createdById, updatedById, ...rest }) => rest);
   }
 
   async findOne(id: string) {
@@ -32,7 +33,8 @@ export class ApplicationService {
     if (!application) {
       throw new NotFoundException(`Application with id ${id} not found`);
     }
-    return application;
+    const { createdById, updatedById, ...rest } = application;
+    return rest;
   }
 
   async update(id: string, updateApplicationDto: UpdateApplicationDto) {
@@ -47,7 +49,9 @@ export class ApplicationService {
         );
       }
     }
-    return this.applicationRepository.update(id, updateApplicationDto);
+    const application = await this.applicationRepository.update(id, updateApplicationDto);
+    const { createdById, updatedById, ...rest } = application;
+    return rest;
   }
 
   async remove(id: string) {
