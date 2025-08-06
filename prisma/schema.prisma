@@ -21,3 +21,10 @@ model User {
 
   @@map("user")
 }
+model Application {
+  id          String @id @default(uuid())
+  name        String @db.VarChar(50)
+  description String @db.VarChar(255)
+
+  @@map("applications")
+}
