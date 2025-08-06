@@ -11,7 +11,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(loginDto: LoginDto): Promise<{ access_token: string; expires_in: number }> {
+  async login(loginDto: LoginDto): Promise<{ access_token: string; refresh_token: string; expires_in: number }> {
     const user = await this.userRepository.findByEmail(loginDto.email);
 
     if (!user) {
@@ -33,13 +33,43 @@ export class AuthService {
       ...userWithoutPassword, // Incluir todas as outras propriedades
     };
 
-    // Gerar token JWT
-    const access_token = this.jwtService.sign(payload);
+    // Gerar tokens JWT
+    const access_token = this.jwtService.sign(payload, { expiresIn: '1h' });
+    const refresh_token = this.jwtService.sign(payload, { expiresIn: '7d' });
 
     return {
       access_token,
+      refresh_token,
       expires_in: 3600, // 1 hora em segundos
     };
+  }
+
+  async refreshToken(refreshToken: string): Promise<{ access_token: string; expires_in: number }> {
+    try {
+      const payload = this.jwtService.verify(refreshToken);
+
+      // Validar se o usuário ainda existe
+      const user = await this.userRepository.findOne(payload.sub);
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      const { password, ...userWithoutPassword } = user;
+
+      const newPayload = {
+        sub: user.id,
+        ...userWithoutPassword,
+      };
+
+      const access_token = this.jwtService.sign(newPayload, { expiresIn: '1h' });
+
+      return {
+        access_token,
+        expires_in: 3600,
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
   }
 
   async validateUser(payload: any) {
