@@ -1,0 +1,11 @@
+---
+description: criando novo modulo
+globs: src/modules
+alwaysApply: true
+---
+
+# Your rule content
+
+- todo modulo novo deverá ser criado na pasta src/modules
+
+- You can use markdown but don't have to
