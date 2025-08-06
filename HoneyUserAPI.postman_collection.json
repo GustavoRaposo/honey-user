@@ -19,6 +19,148 @@
   ],
   "item": [
     {
+      "name": "User-Application",
+      "item": [
+        {
+          "name": "Relacionar usuário a uma aplicação",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"your-user-id\",\n  \"applicationId\": \"your-application-id\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user-application",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user-application"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar aplicações de um usuário",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user-application/user/your-user-id/applications",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user-application",
+                "user",
+                "your-user-id",
+                "applications"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar aplicações que um usuário não está relacionado",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user-application/user/your-user-id/not-in-applications",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user-application",
+                "user",
+                "your-user-id",
+                "not-in-applications"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar usuários de uma aplicação",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user-application/application/your-application-id/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user-application",
+                "application",
+                "your-application-id",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remover relacionamento de um usuário a uma aplicação",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"your-user-id\",\n  \"applicationId\": \"your-application-id\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user-application",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user-application"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "Root",
       "request": {
         "method": "GET",

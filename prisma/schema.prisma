@@ -22,6 +22,8 @@ model User {
   applicationsCreated Application[] @relation("UserApplicationsCreated")
   applicationsUpdated Application[] @relation("UserApplicationsUpdated")
 
+  userApplications UserApplication[]
+
   @@map("user")
 }
 model Application {
@@ -36,5 +38,19 @@ model Application {
   createdBy User @relation("UserApplicationsCreated", fields: [createdById], references: [id])
   updatedBy User @relation("UserApplicationsUpdated", fields: [updatedById], references: [id])
 
+  userApplications UserApplication[]
+
   @@map("application")
+}
+
+model UserApplication {
+  userId        String
+  applicationId String
+  addedAt       DateTime @default(now())
+
+  user          User        @relation(fields: [userId], references: [id])
+  application   Application @relation(fields: [applicationId], references: [id])
+
+  @@id([userId, applicationId])
+  @@map("user_application")
 }
